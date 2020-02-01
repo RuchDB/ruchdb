@@ -1,4 +1,4 @@
-use rtypes::add;
+use rtypes::math::add;
 
 #[test]
 fn add_test() {
