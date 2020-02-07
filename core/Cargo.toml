@@ -4,7 +4,6 @@ version = "0.1.0"
 license = "MIT"
 authors = [
     "Jonir Rings <peterpuyi@live.cn>",
-    "little roys <qh.luo@foxmail.com>",
     "peterhp <sora_lsh@163.com>"
 ]
 repository = "https://github.com/RuchDB/ruchdb"

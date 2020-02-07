@@ -1,2 +1,4 @@
 
-pub mod math;
+mod rstring;
+
+pub use rstring::RString;

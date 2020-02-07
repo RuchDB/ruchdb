@@ -1,0 +1,11 @@
+[package]
+name = "rmem"
+version = "0.1.0"
+license = "MIT"
+authors = ["peterhp <sora_lsh@163.com>"]
+repository = "https://github.com/RuchDB/ruchdb"
+description = "It's a Rust library wrapping internal memory allocation operations."
+edition = "2018"
+
+[dependencies]
+libc = "0.2"

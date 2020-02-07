@@ -1,5 +1,5 @@
-use rtypes::math::add;
+use rtypes::RString;
 
 fn main() {
-    println!("add 1 and 2 result {}", add(1, 2));
+    println!("{}", RString::from_str("Hello, RuchDB!"));
 }
