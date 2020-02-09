@@ -20,6 +20,18 @@ build-dir:
 $(MODS): build-dir
 	$(MAKE) -C $@ BUILD_DIR=$(LIB_BUILD_DIR)
 
+.PHONY: fmt
+fmt:
+	for mod in $(MODS); do \
+  		$(MAKE) -C $$mod $@; \
+	done
+
+.PHONY: fmt-check
+fmt-check:
+	for mod in $(MODS); do \
+  		$(MAKE) -C $$mod $@; \
+	done
+
 .PHONY: test
 test: build-dir
 	for mod in $(MODS); do \

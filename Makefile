@@ -41,6 +41,17 @@ $(BUILD_LIBS): %.build:% build-dir
 $(TEST_LIBS): %.test:% build-dir
 	$(MAKE) -C $< test BUILD_DIR=$(BUILD_DIR)
 
+.PHONY: fmt
+fmt:
+	for tt in $(MODS) $(LIBS_DIR); do \
+ 	    $(MAKE) -C $$tt $@; \
+	done
+
+.PHONY: fmt-check
+fmt-check:
+	for tt in $(MODS) $(LIBS_DIR); do \
+ 	    $(MAKE) -C $$tt $@; \
+	done
 
 .PHONY: clean
 clean:
