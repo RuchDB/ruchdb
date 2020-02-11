@@ -12,19 +12,25 @@ fn create_rstr() {
     assert_eq!(s.len(), STR.len());
     assert_eq!(s.as_bytes(), STR.as_bytes());
     assert_eq!(RString::from_rstr(&s).as_bytes(), STR.as_bytes());
-    assert_eq!(RString::from_bytes(STR.as_bytes()).as_bytes(), STR.as_bytes());
+    assert_eq!(
+        RString::from_bytes(STR.as_bytes()).as_bytes(),
+        STR.as_bytes()
+    );
 
     assert_eq!(s.clone().as_bytes(), STR.as_bytes());
 }
 
 #[test]
 fn cmp_rstrs() {
-    assert_eq!(RString::from_str("RString"), RString::from_bytes(b"RString"));
+    assert_eq!(
+        RString::from_str("RString"),
+        RString::from_bytes(b"RString")
+    );
     assert_ne!(RString::from_str("RString"), RString::from_bytes(b"Rust"));
 
     assert!(RString::from_str("RString") == RString::from_bytes(b"RString"));
-    assert!(RString::from_str("RString") <  RString::from_bytes(b"Rust"));
-    assert!(RString::from_str("RString") >  RString::from_bytes(b"R"));
+    assert!(RString::from_str("RString") < RString::from_bytes(b"Rust"));
+    assert!(RString::from_str("RString") > RString::from_bytes(b"R"));
 }
 
 #[test]
