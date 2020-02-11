@@ -1,4 +1,4 @@
-use rmem::{size_of, align_of, size_of_aligned, size_of_sys_aligned};
+use rmem::{align_of, size_of, size_of_aligned, size_of_sys_aligned};
 
 #[test]
 fn calc_size_of_type() {
@@ -6,12 +6,12 @@ fn calc_size_of_type() {
 
     assert_eq!(size_of::<char>(), 4);
 
-    assert_eq!(size_of::<u8>(),  1);
+    assert_eq!(size_of::<u8>(), 1);
     assert_eq!(size_of::<u16>(), 2);
     assert_eq!(size_of::<u32>(), 4);
     assert_eq!(size_of::<u64>(), 8);
 
-    assert_eq!(size_of::<i8>(),  1);
+    assert_eq!(size_of::<i8>(), 1);
     assert_eq!(size_of::<i16>(), 2);
     assert_eq!(size_of::<i32>(), 4);
     assert_eq!(size_of::<i64>(), 8);
@@ -26,12 +26,12 @@ fn calc_align_of_type() {
 
     assert_eq!(align_of::<char>(), 4);
 
-    assert_eq!(align_of::<u8>(),  1);
+    assert_eq!(align_of::<u8>(), 1);
     assert_eq!(align_of::<u16>(), 2);
     assert_eq!(align_of::<u32>(), 4);
     assert_eq!(align_of::<u64>(), 8);
 
-    assert_eq!(align_of::<i8>(),  1);
+    assert_eq!(align_of::<i8>(), 1);
     assert_eq!(align_of::<i16>(), 2);
     assert_eq!(align_of::<i32>(), 4);
     assert_eq!(align_of::<i64>(), 8);

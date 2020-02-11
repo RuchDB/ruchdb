@@ -1,5 +1,5 @@
-use std::cmp::Ordering;
 use rmem::*;
+use std::cmp::Ordering;
 
 #[test]
 fn mem_ops_on_pkg_buf() {
@@ -25,7 +25,10 @@ fn mem_ops_on_pkg_buf() {
 
         // Extract the first pkg data
         let rdata = b"From: Tom\nData: Hello, Roy!\n";
-        assert_eq!(mem_cmp(buf, PKG_MAGIC.as_ptr(), PKG_MAGIC_LEN), Ordering::Equal);
+        assert_eq!(
+            mem_cmp(buf, PKG_MAGIC.as_ptr(), PKG_MAGIC_LEN),
+            Ordering::Equal
+        );
         let plen = mem_find(buf, len, PKG_END).unwrap() + 1;
         let dlen = plen - PKG_MAGIC_LEN - 1;
         assert_eq!(dlen, rdata.len());
@@ -40,7 +43,10 @@ fn mem_ops_on_pkg_buf() {
 
         // Extract the second pkg data
         let rdata = b"From: Tom\nData: Welcome to Rust world!\n";
-        assert_eq!(mem_cmp(buf, PKG_MAGIC.as_ptr(), PKG_MAGIC_LEN), Ordering::Equal);
+        assert_eq!(
+            mem_cmp(buf, PKG_MAGIC.as_ptr(), PKG_MAGIC_LEN),
+            Ordering::Equal
+        );
 
         let plen = mem_find(buf, len, PKG_END).unwrap() + 1;
         let dlen = plen - PKG_MAGIC_LEN - 1;

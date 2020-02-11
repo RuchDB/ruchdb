@@ -1,8 +1,8 @@
-use std::fmt;
+use rmem::{mem_cmp, mem_copy, mem_move, mem_set};
+use rmem::{zfree, zmalloc, zrealloc};
 use std::cmp::Ordering;
+use std::fmt;
 use std::marker::PhantomData;
-use rmem::{zmalloc, zrealloc, zfree};
-use rmem::{mem_copy, mem_move, mem_set, mem_cmp};
 
 pub struct RString {
     len: usize,
@@ -20,7 +20,13 @@ impl RString {
 
     pub fn with_capacity(capacity: usize) -> Self {
         let (ptr, cap) = zmalloc(capacity);
-        RString { len: 0, cap: cap, data: ptr as _, _marker: PhantomData }
+
+        RString {
+            len: 0,
+            cap: cap,
+            data: ptr as _,
+            _marker: PhantomData,
+        }
     }
 
     #[inline]
@@ -137,7 +143,9 @@ impl RString {
     pub fn trim(&mut self, start: usize, end: usize) {
         let end = std::cmp::min(self.len(), end);
         if start < end {
-            unsafe { mem_move(self.as_ptr().add(start), self.as_mut_ptr(), end - start); }
+            unsafe {
+                mem_move(self.as_ptr().add(start), self.as_mut_ptr(), end - start);
+            }
             self.len = end - start;
         }
     }
@@ -168,7 +176,9 @@ impl RString {
 
     pub fn to_bytes(&self) -> Vec<u8> {
         let mut bytes = Vec::with_capacity(self.len());
-        unsafe { mem_copy(self.as_ptr(), bytes.as_mut_ptr(), self.len()); }
+        unsafe {
+            mem_copy(self.as_ptr(), bytes.as_mut_ptr(), self.len());
+        }
         bytes
     }
 
@@ -198,14 +208,22 @@ impl RString {
     pub fn append_padding(&mut self, value: u8, count: usize) {
         self.reserve(count);
 
-        unsafe { mem_set(self.as_mut_ptr().add(self.len()), value, count); }
+        unsafe {
+            mem_set(self.as_mut_ptr().add(self.len()), value, count);
+        }
         self.len += count;
     }
 
     unsafe fn from_raw_data(data: *const u8, len: usize) -> Self {
         let (ptr, cap) = zmalloc(len);
         mem_copy(data, ptr, len);
-        RString { len: len, cap: cap, data: ptr as _, _marker: PhantomData }
+
+        RString {
+            len: len,
+            cap: cap,
+            data: ptr as _,
+            _marker: PhantomData,
+        }
     }
 
     unsafe fn copy_raw_data(&mut self, data: *const u8, len: usize) {
@@ -245,7 +263,9 @@ macro_rules! impl_str_ops {
         impl RString {
             #[inline]
             pub fn $copy(&mut self, s: $stype) {
-                unsafe { self.copy_raw_data(s.as_ptr(), s.len()); }
+                unsafe {
+                    self.copy_raw_data(s.as_ptr(), s.len());
+                }
             }
         }
     };
@@ -254,7 +274,9 @@ macro_rules! impl_str_ops {
         impl RString {
             #[inline]
             pub fn $append(&mut self, s: $stype) {
-                unsafe { self.append_raw_data(s.as_ptr(), s.len()); }
+                unsafe {
+                    self.append_raw_data(s.as_ptr(), s.len());
+                }
             }
         }
     };
@@ -263,10 +285,12 @@ macro_rules! impl_str_ops {
         impl RString {
             #[inline]
             pub fn $replace(&mut self, offset: usize, s: $stype) {
-                unsafe { self.replace_raw_data(offset, s.as_ptr(), s.len()); }
+                unsafe {
+                    self.replace_raw_data(offset, s.as_ptr(), s.len());
+                }
             }
         }
-    }
+    };
 }
 
 impl_str_ops! { [OP_FROM]    from_bytes,    &[u8]    }
@@ -297,8 +321,8 @@ impl Clone for RString {
 impl PartialEq for RString {
     fn eq(&self, other: &Self) -> bool {
         unsafe {
-            self.len() == other.len() && Ordering::Equal == 
-                mem_cmp(self.as_ptr(), other.as_ptr(), self.len())
+            self.len() == other.len()
+                && Ordering::Equal == mem_cmp(self.as_ptr(), other.as_ptr(), self.len())
         }
     }
 
@@ -307,7 +331,7 @@ impl PartialEq for RString {
     }
 }
 
-impl Eq for RString { }
+impl Eq for RString {}
 
 impl PartialOrd for RString {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
@@ -343,7 +367,13 @@ impl fmt::Debug for RString {
             Err(_) => "<Unreadable Bytes>",
         };
 
-        write!(f, "{{ len: {}, cap: {}, data: <{:p}>[{}] }}", 
-            self.len(), self.capacity(), self.as_ptr(), printed)
+        write!(
+            f,
+            "{{ len: {}, cap: {}, data: <{:p}>[{}] }}",
+            self.len(),
+            self.capacity(),
+            self.as_ptr(),
+            printed
+        )
     }
 }
