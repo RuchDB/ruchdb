@@ -14,3 +14,10 @@ edition = "2018"
 
 [dependencies.rmem]
 path = "../rmem"
+
+[dev-dependencies]
+criterion = "0.3"
+
+[[bench]]
+name = "list_bench"
+harness = false
