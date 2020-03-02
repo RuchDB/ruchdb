@@ -363,6 +363,15 @@ where
     }
 }
 
+impl<T> Drop for RList<T>
+where
+    T: Copy + Clone,
+{
+    fn drop(&mut self) {
+        while self.pop_front().is_some() {}
+    }
+}
+
 impl<T> Debug for RList<T>
 where
     T: Copy + Clone + Debug + Display,
